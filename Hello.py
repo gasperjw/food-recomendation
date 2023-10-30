@@ -34,13 +34,6 @@ def main():
 
     if uploaded_image is not None:
         st.image(uploaded_image, caption="Uploaded Image.", use_column_width=True)
-def main():
-    st.title("Food Image Classifier")
-    
-    uploaded_image = st.file_uploader("Upload a food image", type=["jpg", "jpeg", "png"])
-
-    if uploaded_image is not None:
-        st.image(uploaded_image, caption="Uploaded Image.", use_column_width=True)
         with st.spinner("Classifying..."):
             predictions = query(uploaded_image.getvalue())
 
