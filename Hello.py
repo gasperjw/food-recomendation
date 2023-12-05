@@ -1,6 +1,10 @@
 import requests
 import streamlit as st
 import openai
+from streamlit.logger import get_logger
+
+LOGGER = get_logger(__name__)
+
 
 # Hugging Face Classifier details
 API_URL = "https://api-inference.huggingface.co/models/nateraw/food"
