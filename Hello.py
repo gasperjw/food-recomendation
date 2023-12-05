@@ -1,31 +1,22 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022)
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-import streamlit as st
-from streamlit.logger import get_logger
 import requests
-
-
-LOGGER = get_logger(__name__)
+import streamlit as st
+import openai
 
 # Hugging Face Classifier details
 API_URL = "https://api-inference.huggingface.co/models/nateraw/food"
 headers = {"Authorization": "Bearer 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"}
 
+# OpenAI API key setup
+openai.api_key = st.secrets["openapi"]
+
 def query(image):
     response = requests.post(API_URL, headers=headers, data=image)
     return response.json()
+
+def get_food_recommendations(food_item):
+    prompt = f"Based on the food item '{food_item}', what are some recommended dishes or recipes?"
+    response = openai.Completion.create(engine="text-davinci-003", prompt=prompt, max_tokens=100)
+    return response.choices[0].text.strip()
 
 def main():
     st.title("Food Image Classifier")
@@ -40,6 +31,9 @@ def main():
         top_prediction = predictions[0]
         st.write("Top predicted food:", top_prediction["label"], "with confidence score:", top_prediction["score"])
 
-        
+        # Get food recommendations
+        recommendations = get_food_recommendations(top_prediction["label"])
+        st.write("Food Recommendations:", recommendations)
+
 if __name__ == "__main__":
     main()
