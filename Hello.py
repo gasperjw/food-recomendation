@@ -44,7 +44,7 @@ def main():
         st.write("Top predicted food:", top_prediction["label"], "with confidence score:", top_prediction["score"])
 
         # Get food recommendations
-        recommendations = get_food_recommendations(top_prediction["label"])
+        recommendations = get_food_recommendation_with_details(top_prediction["label"])
         st.write("Food Recommendations:", recommendations)
 
 if __name__ == "__main__":
