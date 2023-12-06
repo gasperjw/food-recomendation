@@ -17,10 +17,18 @@ def query(image):
     response = requests.post(API_URL, headers=headers, data=image)
     return response.json()
 
-def get_food_recommendations(food_item):
-    prompt = f"Based on the food item '{food_item}', what are some recommended dishes or recipes?"
-    response = openai.Completion.create(engine="text-davinci-003", prompt=prompt, max_tokens=100)
+def get_food_recommendation_with_details(food_item):
+    prompt = (
+        f"Based on the food item '{food_item}', suggest one dish that can be made with it. "
+        "Include a recipe, calorie count, and nutrient facts for the dish."
+    )
+    response = openai.Completion.create(
+        engine="text-davinci-003",
+        prompt=prompt,
+        max_tokens=150  # Increased max tokens to accommodate detailed response
+    )
     return response.choices[0].text.strip()
+
 
 def main():
     st.title("Food Image Classifier")
